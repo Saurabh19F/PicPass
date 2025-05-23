@@ -1,20 +1,14 @@
-# Stage 1: Build the Spring Boot app using Maven
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# ---- Build Stage ----
+FROM maven:3.9.4-openjdk-24 AS build
 WORKDIR /app
-COPY pom.xml ./
-RUN mvn dependency:go-offline
-COPY . .
-RUN mvn clean package -DskipTests
+COPY server/pom.xml ./server/
+RUN mvn -f server/pom.xml dependency:go-offline
+COPY server ./server
+RUN mvn -f server/pom.xml clean package -DskipTests
 
-# Stage 2: Run the Spring Boot app
-FROM eclipse-temurin:17-jdk-jammy
+# ---- Runtime Stage ----
+FROM openjdk:24-ea-slim
 WORKDIR /app
-
-# Copy the packaged jar file from the builder stage
-COPY --from=build /app/target/*.jar app.jar
-
-# Expose Spring Boot's default port
+COPY --from=build /app/server/target/graphicalauth-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Start the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
