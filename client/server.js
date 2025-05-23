@@ -9,15 +9,15 @@ const PORT = process.env.PORT || 5173;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files from dist/
+// Serve static files from the "dist" folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// ✅ Correct fallback for SPA routing
+// ✅ Handle all routes with React index.html
 app.get('*', (_, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Frontend server running on port ${PORT}`);
+  console.log(`✅ Client running on http://localhost:${PORT}`);
 });
 
