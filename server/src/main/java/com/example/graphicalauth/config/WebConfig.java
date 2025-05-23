@@ -15,11 +15,14 @@ public class WebConfig {
     public WebMvcConfigurer customConfigurer() {
         return new WebMvcConfigurer() {
 
-            // ✅ 1. CORS Settings
+            // ✅ 1. CORS Settings for Local and Render Deployment
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173" , "https://picpass-client.onrender.com")
+                        .allowedOrigins(
+                                "http://localhost:5173",                          // Local Vite React
+                                "https://picpass-client.onrender.com"            // Deployed frontend
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
@@ -31,7 +34,7 @@ public class WebConfig {
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 String uploadPath = Paths.get("uploads").toAbsolutePath().toUri().toString();
                 registry.addResourceHandler("/uploads/**")
-                        .addResourceLocations("file:uploads/");
+                        .addResourceLocations("file:" + uploadPath);
             }
         };
     }
