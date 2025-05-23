@@ -210,6 +210,22 @@ public class DashboardController {
         return ResponseEntity.ok("Password updated successfully");
     }
 
+@GetMapping("/external/totalusers")
+public ResponseEntity<?> proxyTotalUsers() {
+    String externalApiUrl = "https://sc.ecombullet.com/api/dashboard/totalusers";
+
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+        HttpGet request = new HttpGet(externalApiUrl);
+        try (CloseableHttpResponse response = client.execute(request)) {
+            String json = EntityUtils.toString(response.getEntity());
+            return ResponseEntity.ok().body(json);
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Error fetching external data: " + e.getMessage());
+    }
+}
+
+    
     @GetMapping("/fix-missing-fileExtensions")
     public String fixMissingFileExtensions() {
         List<UploadedFile> files = uploadedFileRepository.findAll();
