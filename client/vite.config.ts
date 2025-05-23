@@ -1,9 +1,19 @@
 import { defineConfig } from 'vite';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  plugins: [],
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'public/_redirects',
+          dest: '.' // Copies to dist/
+        }
+      ]
+    })
+  ],
   css: {
     postcss: {
       plugins: [
@@ -30,7 +40,6 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      // ✅ Add proxy for external API
       '/external-api': {
         target: 'https://sc.ecombullet.com',
         changeOrigin: true,
