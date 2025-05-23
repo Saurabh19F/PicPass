@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: picpass-client
+    env: static
+    rootDir: client
+    buildCommand: npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE
+        value: https://picpass-server.onrender.com
+
+  - type: web
+    name: picpass-server
+    env: docker
+    rootDir: server
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: MONGO_URI
+        value: your-mongodb-uri
+      - key: TWILIO_SID
+        value: your-twilio-sid
+      - key: TWILIO_TOKEN
+        value: your-twilio-token
+      - key: TWILIO_PHONE
+        value: your-twilio-phone
