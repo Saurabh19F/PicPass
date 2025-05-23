@@ -1,21 +1,12 @@
-# Use official OpenJDK base image
-FROM openjdk:17-jdk-slim
 
-# Set environment variables
-ENV PORT=8080
-
-# Add metadata to image
-LABEL maintainer="you@example.com"
-
-# Create app directory inside container
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the built JAR file (built locally via Maven)
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-
-# Expose port (for Render, PORT is injected as env var)
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Start the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
