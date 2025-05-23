@@ -1,0 +1,67 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background: #0f172a; /* Tailwind slate-900 fallback */
+  background-image: url("/bg-scenery.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.signup-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  width: 100%;
+  max-width: 720px;
+  color: white;
+  z-index: 10;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.input::placeholder {
+  color: #cbd5e1;
+}
+
+.button {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.button.primary:hover {
+  background-color: #2563eb;
+}
+
+.button.secondary {
+  background-color: #475569;
+  color: white;
+}
+
+.button.secondary:hover {
+  background-color: #334155;
+}
