@@ -1,14 +1,17 @@
 services:
+  # FRONTEND: React + Vite hosted with Express (Node.js)
   - type: web
     name: picpass-client
-    env: static
+    env: node
     rootDir: client
     buildCommand: npm run build
-    staticPublishPath: dist
+    startCommand: npm run start
+    plan: free
     envVars:
       - key: VITE_API_BASE
         value: https://picpass-server.onrender.com
 
+  # BACKEND: Spring Boot (Dockerized)
   - type: web
     name: picpass-server
     env: docker
