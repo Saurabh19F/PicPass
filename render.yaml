@@ -1,29 +1,32 @@
 services:
-  # FRONTEND: React + Vite hosted with Express (Node.js)
+  # ✅ FRONTEND: React + Vite + Express (Node.js)
   - type: web
     name: picpass-client
     env: node
     rootDir: client
-    buildCommand: npm install && npm run build     # ✅ install dependencies first!
-    startCommand: npm run start
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
     plan: free
     envVars:
       - key: VITE_API_BASE
         value: https://picpass-server.onrender.com
 
-  # BACKEND: Spring Boot (Dockerized)
+  # ✅ BACKEND: Spring Boot (Dockerized)
   - type: web
     name: picpass-server
     env: docker
     rootDir: server
     dockerContext: .
+    dockerfilePath: Dockerfile
     plan: free
     envVars:
       - key: MONGO_URI
-        value: your-mongodb-uri
+        value: mongodb://saurabhke4:oxykEIDkjPt1lack@ac-jzltpux-shard-00-00.1g8pnew.mongodb.net:27017,ac-jzltpux-shard-00-01.1g8pnew.mongodb.net:27017,ac-jzltpux-shard-00-02.1g8pnew.mongodb.net:27017/graphical_auth?ssl=true&replicaSet=atlas-nsj9a7-shard-0&authSource=admin&retryWrites=true&w=majority&appName=graphicalauth
       - key: TWILIO_SID
-        value: your-twilio-sid
+        value: AC64cf4b78cc2648e099a171e5c43552a8
       - key: TWILIO_TOKEN
-        value: your-twilio-token
+        value: bb6f74e80658ee2af1a564e1bb96a477
       - key: TWILIO_PHONE
-        value: your-twilio-phone
+        value: +16362515395
+      - key: OPENWEATHER_API_KEY
+        value: openweather.api.key=1ff3b7ff6660b458ebed90c3161c8b03
