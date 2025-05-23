@@ -1,19 +1,31 @@
-FROM openjdk:24-jdk AS build
+# ---- Stage 1: Build the application ----
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -fsSL https://downloads.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz | tar -xz -C /opt && \
-    ln -s /opt/apache-maven-3.9.4 /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/bin/mvn
-
+# Set working directory inside the container
 WORKDIR /app
-COPY server/pom.xml ./pom.xml
-COPY server/src ./src
-RUN mvn clean package -DskipTests
 
-FROM openjdk:24-jdk
+# Copy pom.xml and download dependencies (cached separately for speed)
+COPY server/pom.xml ./server/
+RUN mvn -f server/pom.xml dependency:go-offline
+
+# Copy the full source code into the container
+COPY server ./server
+
+# Build the application (skip tests for faster build)
+RUN mvn -f server/pom.xml clean package -DskipTests
+
+# ---- Stage 2: Run the application ----
+FROM eclipse-temurin:17-jdk AS runtime
+
+# Set working directory
 WORKDIR /app
-COPY --from=build /app/target/graphicalauth-0.0.1-SNAPSHOT.jar app.jar
+
+# Copy the Spring Boot jar from the build stage
+COPY --from=build /app/server/target/graphicalauth-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the application port (change if needed)
 EXPOSE 8080
+
+# Run the Spring Boot application
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
