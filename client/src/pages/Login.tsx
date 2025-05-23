@@ -20,18 +20,18 @@ export default function Login() {
 
   useEffect(() => {
     if (step === "VERIFY" && username) {
-      api
-        .get(`/auth/user-image/${username}`)
+      api.get(`/auth/user-image/${username}`)
         .then((res) => {
-          setImageUrl(import.meta.env.VITE_API_BASE + res.data.imageUrl);
+          setImageUrl(import.meta.env.PROD
+            ? "https://picpass-server.onrender.com" + res.data.imageUrl
+            : "http://localhost:8080" + res.data.imageUrl);
         })
         .catch(() => {
           toast.error("Failed to fetch image");
           setImageUrl(null);
         });
 
-      api
-        .get(`/auth/user-phone/${username}`)
+      api.get(`/auth/user-phone/${username}`)
         .then((res) => setPhone(res.data.phone))
         .catch(() => {
           toast.error("Failed to fetch phone");
@@ -48,10 +48,8 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (!username || !password) return toast.error("Please fill all fields.");
-
     try {
       const res = await api.post("/auth/login", { username, password });
-
       if (res.data === "OTP_SENT") {
         toast.success("OTP sent! Proceed to verification.");
         setStep("VERIFY");
@@ -96,7 +94,6 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center font-sans">
-      {/* Background Video */}
       <video
         autoPlay
         muted
@@ -108,7 +105,6 @@ export default function Login() {
       </video>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md -z-10" />
 
-      {/* Card */}
       <div className="z-10 w-full max-w-xl bg-white/10 border border-white/10 backdrop-blur-md rounded-2xl shadow-2xl px-8 py-10">
         <Toaster />
         <motion.div
