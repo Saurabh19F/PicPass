@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageSegmentGrid from "../components/ImageSegmentGrid";
 import HomeButton from "../components/HomeButton";
+import BASE_URL from "../utils/apiBase"; // ✅ Dynamic API URL
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -75,7 +76,7 @@ export default function Signup() {
       data.append("image", image);
       data.append("segments", JSON.stringify(segments));
 
-      await axios.post("http://localhost:8080/auth/signup", data, {
+      await axios.post(`${BASE_URL}/auth/signup`, data, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
@@ -85,12 +86,14 @@ export default function Signup() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error("❌ Signup error:", error.response?.data || error.message);
+        toast.error(error.response?.data?.message || "Signup failed.");
       } else if (error instanceof Error) {
         console.error("❌ Signup error:", error.message);
+        toast.error("Signup failed.");
       } else {
         console.error("❌ Signup error:", error);
+        toast.error("Signup failed.");
       }
-      toast.error("Signup failed.");
     } finally {
       setLoading(false);
     }
@@ -98,7 +101,6 @@ export default function Signup() {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center font-sans">
-      {/* Background Video */}
       <video
         autoPlay
         muted
@@ -110,9 +112,7 @@ export default function Signup() {
       </video>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md -z-10" />
 
-      {/* Split Container */}
       <div className="z-10 grid grid-cols-1 md:grid-cols-2 w-full max-w-6xl mx-auto shadow-2xl rounded-2xl overflow-hidden border border-white/10 backdrop-blur-lg bg-white/5">
-        {/* Left Welcome Section */}
         <div className="hidden md:flex items-center justify-center px-10 py-20 bg-black/30">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -129,7 +129,6 @@ export default function Signup() {
           </motion.div>
         </div>
 
-        {/* Signup Form */}
         <div className="p-8 md:p-10 overflow-y-auto">
           <motion.h2
             initial={{ opacity: 0, y: -30 }}
@@ -181,7 +180,6 @@ export default function Signup() {
               required
             />
 
-            {/* Password with toggle */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -201,7 +199,6 @@ export default function Signup() {
               </button>
             </div>
 
-            {/* Image Upload */}
             <div>
               <label className="block text-white text-sm mb-1">Upload Image</label>
               <input
@@ -221,7 +218,6 @@ export default function Signup() {
               />
             )}
 
-            {/* Phone with Country Code */}
             <div className="flex gap-2">
               <select
                 value={countryCode}
