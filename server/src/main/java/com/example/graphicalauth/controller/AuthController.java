@@ -4,7 +4,6 @@ import com.example.graphicalauth.model.*;
 import com.example.graphicalauth.repository.*;
 import com.example.graphicalauth.service.OtpService;
 import com.example.graphicalauth.service.ImageStorageService;
-import com.example.graphicalauth.payload.LoginVerificationRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.gridfs.GridFSBucket;
