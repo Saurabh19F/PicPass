@@ -17,21 +17,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/login",
-                                "/auth/**",
-                                "/dashboard/**",
-                                "/dashboard/avatar",
-                                "/dashboard/change-password",
-                                "/uploads/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                );
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/auth/**",
+                    "/dashboard/**",
+                    "/dashboard/avatar",
+                    "/dashboard/change-password",
+                    "/uploads/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            );
 
         return http.build();
     }
@@ -40,13 +39,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://picpass-client.onrender.com"
+            "http://localhost:5173",
+            "https://picpass-client.onrender.com"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "Content-Type"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(true); // Important if cookies or credentials are sent
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
