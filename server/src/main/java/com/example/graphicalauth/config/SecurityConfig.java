@@ -17,10 +17,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // use the corsConfigurationSource bean below
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/dashboard/**", "/dashboard/avatar", "/dashboard/change-password","/uploads/**").permitAll()
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/**",
+                                "/dashboard/**",
+                                "/dashboard/avatar",
+                                "/dashboard/change-password",
+                                "/uploads/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 
@@ -30,9 +39,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "https://picpass-client.onrender.com"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://picpass-client.onrender.com"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
