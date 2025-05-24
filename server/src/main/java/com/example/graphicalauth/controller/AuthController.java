@@ -8,11 +8,6 @@ import com.example.graphicalauth.payload.LoginVerificationRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.gridfs.GridFSBucket;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +19,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -98,8 +96,6 @@ public class AuthController {
         }
     }
 
-
-    // 2. Login (username + password)
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<User> userOpt = userRepo.findByUsername(request.getUsername());
@@ -124,22 +120,18 @@ public class AuthController {
         return ResponseEntity.ok("OTP_SENT");
     }
 
-    // 3. Verify OTP + Graphical Password
     @PostMapping("/verify-otp-grid")
     public ResponseEntity<?> verifyOtpAndGrid(@RequestBody OtpVerifyRequest request) {
-        // Verify OTP
         OtpEntry entry = otpStore.get(request.getPhone());
         if (entry == null || !entry.otp.equals(request.getOtp())) {
             return ResponseEntity.badRequest().body("Invalid or expired OTP.");
         }
         otpStore.remove(request.getPhone());
 
-        // Find user
         Optional<User> userOpt = userRepo.findByUsername(request.getUsername());
         if (userOpt.isEmpty()) return ResponseEntity.status(404).body("User not found.");
         User user = userOpt.get();
 
-        // Match graphical password
         Optional<GraphicalPassword> passOpt = passwordRepo.findByUserId(user.getId());
         if (passOpt.isEmpty()) return ResponseEntity.badRequest().body("Graphical password not set.");
 
@@ -148,10 +140,8 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Incorrect graphical password.");
         }
 
-        // Log activity
         logActivity(user.getId(), "LOGIN", request.getIp());
 
-        // Send user data
         Map<String, Object> response = new HashMap<>();
         response.put("message", "LOGIN_SUCCESS");
         response.put("username", user.getUsername());
@@ -162,7 +152,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    // 4. Get phone by username or email
     @GetMapping("/user-phone/{identifier}")
     public ResponseEntity<?> getPhoneByUsernameOrEmail(@PathVariable String identifier) {
         Optional<User> userOpt = userRepo.findByUsername(identifier);
@@ -179,14 +168,12 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("phone", phone));
     }
 
-    // 5. Stream uploaded image
     @GetMapping("/image/{id}")
     public void getImage(@PathVariable String id, HttpServletResponse response) throws IOException {
         response.setContentType("image/jpeg");
         gridFSBucket.downloadToStream(new ObjectId(id), response.getOutputStream());
     }
 
-    // 6. Get uploaded image URL by username
     @GetMapping("/user-image/{username}")
     public ResponseEntity<?> getUserImageUrl(@PathVariable String username) {
         Optional<User> userOpt = userRepo.findByUsername(username);
@@ -196,7 +183,6 @@ public class AuthController {
         String imageUrl = userOpt.get().getUploadedImageUrl();
         return ResponseEntity.ok(Map.of("imageUrl", imageUrl));
     }
-
 
     @PostMapping(value = "/upload-avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadAvatar(
@@ -209,7 +195,6 @@ public class AuthController {
         }
 
         try {
-            // Save file
             String avatarDir = "uploads/avatars";
             File dir = new File(avatarDir);
             if (!dir.exists()) dir.mkdirs();
@@ -218,7 +203,6 @@ public class AuthController {
             Path path = Paths.get(avatarDir, fileName);
             Files.copy(avatarFile.getInputStream(), path);
 
-            // Update user with avatar path
             User user = userOpt.get();
             user.setAvatarPath("/uploads/avatars/" + fileName);
             userRepo.save(user);
@@ -247,10 +231,7 @@ public class AuthController {
         return ResponseEntity.ok("Password updated successfully");
     }
 
-
-
-
-    // Utilities
+    // Utility Methods
     private String generateOtp() {
         return String.valueOf(new Random().nextInt(900000) + 100000);
     }
