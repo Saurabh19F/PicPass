@@ -95,12 +95,16 @@ public class AuthController {
         }
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    try {
         Optional<User> userOpt = userRepo.findByUsername(request.getUsername());
         if (userOpt.isEmpty()) return ResponseEntity.status(404).body("User not found.");
 
         User user = userOpt.get();
+        if (user.getPassword() == null) return ResponseEntity.status(400).body("Password not set.");
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.badRequest().body("Invalid password.");
@@ -113,12 +117,24 @@ public class AuthController {
         OtpEntry entry = new OtpEntry();
         entry.otp = otp;
         entry.expiresAt = System.currentTimeMillis() + 5 * 60 * 1000;
+
+        if (user.getPhone() == null || user.getPhone().isBlank()) {
+            return ResponseEntity.status(400).body("Phone number not found.");
+        }
+
         otpStore.put(user.getPhone(), entry);
         otpService.sendOtp(user.getPhone(), otp);
 
         return ResponseEntity.ok("OTP_SENT");
-    }
 
+    } catch (Exception e) {
+        e.printStackTrace(); // This will show in Render logs
+        return ResponseEntity.status(500).body("Login failed: " + e.getMessage());
+    }
+}
+
+
+    
     @PostMapping("/verify-otp-grid")
     public ResponseEntity<?> verifyOtpAndGrid(@RequestBody OtpVerifyRequest request) {
         OtpEntry entry = otpStore.get(request.getPhone());
