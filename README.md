@@ -39,7 +39,7 @@ DevOps & Deployment
 🚀 Getting Started
 
 1. Clone the repo
-git clone https://github.com/your-username/picpass-auth.git
+git clone https://github.com/Saurabh19F/PicPass.git
 cd picpass-auth
 
 2. Backend Setup (Spring Boot)
