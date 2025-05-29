@@ -65,6 +65,7 @@ PicPass is a modern, secure authentication system that combines graphical passwo
 
 
 ### ICICC-2025 Certificate(s) (Paper ID: 1084)
+![Paper}(./assets/Paper.jpg)
 
 
 
