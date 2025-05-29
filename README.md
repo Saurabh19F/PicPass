@@ -64,8 +64,11 @@ PicPass is a modern, secure authentication system that combines graphical passwo
 
 
 
-### ICICC-2025 Certificate(s) (Paper ID: 1084)
-![Paper}(./assets/Paper.jpg)
+### 📜 Conference Certificate(s) (Paper ID: 1084)
+
+Presented at the **8th International Conference on Innovative Computing and Communication (ICICC-2025)**
+![ICICC Certificate](./assets/Paper.jpg)
+
 
 
 
