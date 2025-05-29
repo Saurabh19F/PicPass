@@ -30,7 +30,7 @@ PicPass is a modern, secure authentication system that combines graphical passwo
 
 ### DevOps & Deployment
 - Render (Backend)
-- Netlify / Vercel (Frontend)
+- Render (Frontend)
 - Maven + Lombok
 
 ## 🖼️ Screenshots
