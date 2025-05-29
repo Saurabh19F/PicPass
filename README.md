@@ -1,4 +1,4 @@
-# 🔐 PicPass: Graphical Password + OTP Authentication System
+# 🔐 PicPass: Graphical Password by Image Segmentation + OTP Authentication System
 
 PicPass is a modern, secure authentication system that combines graphical passwords with OTP verification via Twilio. Built using React.js (Vite + Tailwind + Framer Motion) and Spring Boot (Java), it features image-based login, segmented grid verification, and a responsive dashboard.
 
@@ -61,6 +61,16 @@ PicPass is a modern, secure authentication system that combines graphical passwo
 
 ### 📋 Activity Log
 ![Logs](./assets/logs.png)
+
+
+
+### ICICC-2025 Certificate(s) (Paper ID: 1084)
+(./assets/Paper 1084.jpg)
+
+
+### Publications - SSRN (Elsevier)
+(https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4997226)
+
 
 
 🚀 Getting Started
