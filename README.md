@@ -1,8 +1,8 @@
-🔐 PicPass: Graphical Password + OTP Authentication System
+# 🔐 PicPass: Graphical Password + OTP Authentication System
 
 PicPass is a modern, secure authentication system that combines graphical passwords with OTP verification via Twilio. Built using React.js (Vite + Tailwind + Framer Motion) and Spring Boot (Java), it features image-based login, segmented grid verification, and a responsive dashboard.
 
-✨ Features
+## ✨ Features
 - Signup with full user info and profile picture
 - Upload image and select graphical segments as a password
 - Multi-step login: Username → OTP → Grid Selection
@@ -13,28 +13,55 @@ PicPass is a modern, secure authentication system that combines graphical passwo
 - Dashboard analytics and file type chart
 - Dark mode toggle with animated transitions
 
-🧩 Tech Stack
+## 🧩 Tech Stack
 
-Frontend
+### Frontend
 - React + Vite
 - Tailwind CSS
 - Framer Motion
 - Axios + React Hot Toast
 
-Backend
+### Backend
 - Java + Spring Boot
 - Spring Security + JWT Auth
 - MongoDB Atlas
 - Twilio Verify API
 - Apache HttpClient (weather proxy)
 
-DevOps & Deployment
+### DevOps & Deployment
 - Render (Backend)
 - Netlify / Vercel (Frontend)
 - Maven + Lombok
 
-🖼️ Screenshots
-> Insert screenshots here for Signup, Login, and Dashboard
+## 🖼️ Screenshots
+
+### 🌐 Landing Page
+![Landing](./assets/landing-page.png)
+
+### ❓ Why PicPass?
+![Why PicPass](./assets/why-picpass.png)
+
+### 📤 Contact Section
+![Upload](./assets/contact.png)
+
+### 🆕 Signup with Image + MFA
+![Signup](./assets/signup-screen.png)
+
+### 🔑 Step 1: Basic Login (Username + Password)
+![Login Step 1](./assets/login-step-1.png)
+
+### 🔐 Graphical OTP Login
+![Login](./assets/login-screen.png)
+
+### 🧑‍💼 User Dashboard
+![Dashboard](./assets/dashboard.png)
+
+### 📊 File Type Distribution
+![Chart](./assets/pie-chart.png)
+
+### 📋 Activity Log
+![Logs](./assets/logs.png)
+
 
 🚀 Getting Started
 
